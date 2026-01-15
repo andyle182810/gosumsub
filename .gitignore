@@ -1,0 +1,42 @@
+# ========================
+# Secrets / Environment
+# ========================
+.env
+.env.*
+*.pem
+*.key
+
+# ========================
+# Go build artifacts
+# ========================
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# ========================
+# Go tooling / cache
+# ========================
+/bin/
+/dist/
+/build/
+vendor/
+coverage.out
+
+# ========================
+# IDE / Editor
+# ========================
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+.claude
+
+# ========================
+# Logs
+# ========================
+*.log
