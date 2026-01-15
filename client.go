@@ -210,8 +210,14 @@ func (c *Client) handleErrorResponse(statusCode int, body []byte) error {
 }
 
 func (c *Client) execute(ctx context.Context, req *request) ([]byte, error) {
+	body, _, err := c.executeWithContentType(ctx, req)
+
+	return body, err
+}
+
+func (c *Client) executeWithContentType(ctx context.Context, req *request) ([]byte, string, error) {
 	if err := c.buildRequest(req); err != nil {
-		return nil, err
+		return nil, "", err
 	}
 
 	httpReq, err := http.NewRequestWithContext(
@@ -221,29 +227,29 @@ func (c *Client) execute(ctx context.Context, req *request) ([]byte, error) {
 		req.Body,
 	)
 	if err != nil {
-		return nil, err
+		return nil, "", err
 	}
 
 	httpReq.Header = req.Header
 
 	resp, err := c.httpClient.Do(httpReq)
 	if err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrHTTPFailure, err)
+		return nil, "", fmt.Errorf("%w: %w", ErrHTTPFailure, err)
 	}
 
 	defer resp.Body.Close()
 
 	responseBody, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err
+		return nil, "", err
 	}
 
-	c.logDebug("http response", "status", resp.StatusCode)
+	c.logDebug("http response status", "status", resp.StatusCode)
 	c.logDebug("http response body", "body", string(responseBody))
 
 	if resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusMultipleChoices {
-		return nil, c.handleErrorResponse(resp.StatusCode, responseBody)
+		return nil, "", c.handleErrorResponse(resp.StatusCode, responseBody)
 	}
 
-	return responseBody, nil
+	return responseBody, resp.Header.Get("Content-Type"), nil
 }

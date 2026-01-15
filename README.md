@@ -72,8 +72,13 @@ Integration tests automatically skip when required credentials are missing.
 Required environment variables:
 
 ```bash
+SUMSUB_LEVEL_NAME=idv-and-phone-verification
 SUMSUB_APP_TOKEN=your_app_token
-SUMSUB_SECRET_KEY=your_secret_key
+SUMSUB_API_SECRET=your_api_secret
+SUMSUB_WEBHOOK_SECRET=your_webhook_secret
+SUMSUB_TEST_APPLICANT_ID=your_test_applicant_id
+SUMSUB_TEST_INSPECTION_ID=your_test_inspection_id
+SUMSUB_TEST_IMAGE_ID=your_test_image_id
 ```
 
 Run tests:
@@ -81,31 +86,6 @@ Run tests:
 ```bash
 go test ./...
 ```
-
-## Contributing
-
-Contributions are welcome and appreciated.
-
-1. Fork the repository
-2. Create a feature branch
-
-   ```bash
-   git checkout -b feature/my-feature
-   ```
-
-3. Commit your changes
-
-   ```bash
-   git commit -m "Add my feature"
-   ```
-
-4. Push to your fork
-
-   ```bash
-   git push origin feature/my-feature
-   ```
-
-5. Open a Pull Request
 
 ## Support
 

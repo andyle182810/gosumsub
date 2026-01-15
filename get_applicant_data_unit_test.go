@@ -119,7 +119,7 @@ func TestGetApplicantData_VerifyInfo(t *testing.T) {
 		t.Errorf("expected LastName 'Mock-Doe', got %q", resp.Info.LastName)
 	}
 
-	if resp.Info.Country != "VNM" {
+	if resp.Info.Country != "VNM" { //nolint:goconst
 		t.Errorf("expected Country 'VNM', got %q", resp.Info.Country)
 	}
 
