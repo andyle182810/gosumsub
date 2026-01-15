@@ -18,6 +18,10 @@ pre-gci:
 gci: pre-gci
 	gci write --skip-generated -s standard -s default .
 
-.PHONY:pre-api-doc
-pre-api-doc:
-	command -v swag >/dev/null 2>&1 || go install github.com/swaggo/swag/cmd/swag@v1.16.6
+.PHONY:test-unit
+test-unit:
+	go test -v -short ./...
+
+.PHONY:test-integration
+test-integration:
+	go test -v -run Integration ./...

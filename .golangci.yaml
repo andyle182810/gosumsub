@@ -134,6 +134,9 @@ linters:
   fast: true
 
 linters-settings:
+  exhaustruct:
+    exclude:
+      - "^net/http\\.Response$"
   varnamelen:
     min-name-length: 3
     ignore-names:

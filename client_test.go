@@ -25,8 +25,9 @@ func newTestClient(t *testing.T) *gosumsub.Client {
 	}
 
 	logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
-		AddSource: false,
-		Level:     slog.LevelDebug,
+		AddSource:   false,
+		Level:       slog.LevelDebug,
+		ReplaceAttr: nil,
 	}))
 
 	client, err := gosumsub.NewClient(
@@ -69,7 +70,7 @@ func newMockClient(t *testing.T, httpClient gosumsub.HTTPClient) *gosumsub.Clien
 		"test-token",
 		"test-secret",
 		gosumsub.WithHTTPClient(httpClient),
-		gosumsub.WithSigner(&mockSigner{signature: "test-signature"}),
+		gosumsub.WithSigner(&mockSigner{signature: "test-signature", err: nil}),
 		gosumsub.WithClock(func() time.Time { return time.Unix(1234567890, 0) }),
 	)
 	if err != nil {

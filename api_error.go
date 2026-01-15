@@ -23,11 +23,11 @@ func (e *APIError) Error() string {
 	}
 
 	if e.ErrorName != "" {
-		details += fmt.Sprintf(", errorName: %s", e.ErrorName)
+		details += ", errorName: " + e.ErrorName
 	}
 
 	if e.CorrelationID != "" {
-		details += fmt.Sprintf(", correlationId: %s", e.CorrelationID)
+		details += ", correlationId: " + e.CorrelationID
 	}
 
 	return fmt.Sprintf("%s (%s)", msg, details)

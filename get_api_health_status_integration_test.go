@@ -7,6 +7,8 @@ import (
 )
 
 func TestIntegration_GetAPIHealthStatus(t *testing.T) {
+	t.Parallel()
+
 	client := newTestClient(t)
 
 	err := client.GetAPIHealthStatus(t.Context())
@@ -18,6 +20,8 @@ func TestIntegration_GetAPIHealthStatus(t *testing.T) {
 }
 
 func TestIntegration_GetAPIHealthStatus_WithCancelledContext(t *testing.T) {
+	t.Parallel()
+
 	client := newTestClient(t)
 
 	ctx, cancel := context.WithCancel(t.Context())
@@ -32,6 +36,8 @@ func TestIntegration_GetAPIHealthStatus_WithCancelledContext(t *testing.T) {
 }
 
 func TestIntegration_GetAPIHealthStatus_WithTimeout(t *testing.T) {
+	t.Parallel()
+
 	client := newTestClient(t)
 
 	ctx, cancel := context.WithTimeout(t.Context(), 10*time.Second)

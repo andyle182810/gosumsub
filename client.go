@@ -198,6 +198,17 @@ func (c *Client) buildRequest(req *request) error {
 	return nil
 }
 
+func (c *Client) handleErrorResponse(statusCode int, body []byte) error {
+	if len(body) > 0 && json.Valid(body) {
+		var apiErr APIError
+		if err := json.Unmarshal(body, &apiErr); err == nil && apiErr.Code != 0 {
+			return &apiErr
+		}
+	}
+
+	return fmt.Errorf("%w: %d", ErrUnexpectedStatus, statusCode)
+}
+
 func (c *Client) execute(ctx context.Context, req *request) ([]byte, error) {
 	if err := c.buildRequest(req); err != nil {
 		return nil, err
@@ -231,14 +242,7 @@ func (c *Client) execute(ctx context.Context, req *request) ([]byte, error) {
 	c.logDebug("http response body", "body", string(responseBody))
 
 	if resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusMultipleChoices {
-		if len(responseBody) > 0 && json.Valid(responseBody) {
-			var apiErr APIError
-			if err = json.Unmarshal(responseBody, &apiErr); err == nil && apiErr.Code != 0 {
-				return nil, &apiErr
-			}
-		}
-
-		return nil, fmt.Errorf("%w: %d", ErrUnexpectedStatus, resp.StatusCode)
+		return nil, c.handleErrorResponse(resp.StatusCode, responseBody)
 	}
 
 	return responseBody, nil
