@@ -11,39 +11,6 @@ import (
 	"github.com/andyle182810/gosumsub"
 )
 
-func newTestClient(t *testing.T) *gosumsub.Client {
-	t.Helper()
-
-	token := strings.TrimSpace(os.Getenv("SUMSUB_APP_TOKEN"))
-	if token == "" {
-		t.Skip("skipping test: SUMSUB_APP_TOKEN not set")
-	}
-
-	secret := strings.TrimSpace(os.Getenv("SUMSUB_API_SECRET"))
-	if secret == "" {
-		t.Skip("skipping test: SUMSUB_API_SECRET not set")
-	}
-
-	logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
-		AddSource:   false,
-		Level:       slog.LevelDebug,
-		ReplaceAttr: nil,
-	}))
-
-	client, err := gosumsub.NewClient(
-		"https://api.sumsub.com",
-		token,
-		secret,
-		gosumsub.WithDebug(true),
-		gosumsub.WithLogger(logger),
-	)
-	if err != nil {
-		t.Fatalf("failed to create client: %v", err)
-	}
-
-	return client
-}
-
 type mockHTTPClient struct {
 	response *http.Response
 	err      error
@@ -75,6 +42,39 @@ func newMockClient(t *testing.T, httpClient gosumsub.HTTPClient) *gosumsub.Clien
 	)
 	if err != nil {
 		t.Fatalf("failed to create mock client: %v", err)
+	}
+
+	return client
+}
+
+func newTestClient(t *testing.T) *gosumsub.Client {
+	t.Helper()
+
+	token := strings.TrimSpace(os.Getenv("SUMSUB_APP_TOKEN"))
+	if token == "" {
+		t.Skip("skipping test: SUMSUB_APP_TOKEN not set")
+	}
+
+	secret := strings.TrimSpace(os.Getenv("SUMSUB_API_SECRET"))
+	if secret == "" {
+		t.Skip("skipping test: SUMSUB_API_SECRET not set")
+	}
+
+	logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
+		AddSource:   false,
+		Level:       slog.LevelDebug,
+		ReplaceAttr: nil,
+	}))
+
+	client, err := gosumsub.NewClient(
+		"https://api.sumsub.com",
+		token,
+		secret,
+		gosumsub.WithDebug(true),
+		gosumsub.WithLogger(logger),
+	)
+	if err != nil {
+		t.Fatalf("failed to create client: %v", err)
 	}
 
 	return client
