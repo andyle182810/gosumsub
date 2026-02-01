@@ -15,7 +15,7 @@ import (
 	"testing"
 
 	"github.com/andyle182810/gosumsub"
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v5"
 )
 
 const (
@@ -443,7 +443,7 @@ func TestEchoWebhookMiddleware_ValidSignature(t *testing.T) {
 	echoInstance := echo.New()
 	called := false
 
-	handler := func(ctx echo.Context) error {
+	handler := func(ctx *echo.Context) error {
 		called = true
 
 		readBody, _ := io.ReadAll(ctx.Request().Body)
@@ -485,7 +485,7 @@ func TestEchoWebhookMiddleware_InvalidSignature(t *testing.T) {
 	echoInstance := echo.New()
 	called := false
 
-	handler := func(ctx echo.Context) error {
+	handler := func(ctx *echo.Context) error {
 		called = true
 
 		return ctx.String(http.StatusOK, "ok")
@@ -522,7 +522,7 @@ func TestEchoWebhookMiddleware_MissingDigestHeader(t *testing.T) {
 	echoInstance := echo.New()
 	called := false
 
-	handler := func(ctx echo.Context) error {
+	handler := func(ctx *echo.Context) error {
 		called = true
 
 		return ctx.String(http.StatusOK, "ok")
@@ -559,7 +559,7 @@ func TestEchoWebhookMiddleware_WrongSecretKey(t *testing.T) {
 	echoInstance := echo.New()
 	called := false
 
-	handler := func(ctx echo.Context) error {
+	handler := func(ctx *echo.Context) error {
 		called = true
 
 		return ctx.String(http.StatusOK, "ok")
