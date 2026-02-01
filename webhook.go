@@ -13,7 +13,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v5"
 )
 
 const (
@@ -154,7 +154,7 @@ func WebhookMiddleware(secretKey string) func(http.Handler) http.Handler {
 
 func EchoWebhookMiddleware(secretKey string) func(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
-		return func(ctx echo.Context) error {
+		return func(ctx *echo.Context) error {
 			_, err := VerifyWebhookRequestWithBody(ctx.Request(), secretKey)
 			if err != nil {
 				return ctx.String(http.StatusUnauthorized, "unauthorized")
